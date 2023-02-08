@@ -11,8 +11,8 @@ var forecastContainer = document.querySelector("#forecast");
 var HistoryContainer = document.querySelector("#history");
 
 // Timezone
-dayjs.extend(window.dayjs_plugin_utc);
-dayjs.extend(window.dayjs_plugin_timezone);
+// dayjs.extend(window.dayjs_plugin_utc);
+// dayjs.extend(window.dayjs_plugin_timezone);
 
 function renderSearchHistory() {
   HistoryContainer.innerHTML = "";
@@ -97,3 +97,32 @@ function todaysWeather(city, weather, timezone) {
       } else {
         uviBadge.classList.add('btn-danger');
       }
+
+      uviBadge.textContent = uvi;
+      currentUVI.append(uviBadge);
+      cardBody.append(uvEl);
+    
+      currentContainer.innerHTML = '';
+      currentContainer.append(card);
+    };
+
+    function renderForecastCard(forecast, timezone) {
+        var unixTs = forecast.dt;
+        var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
+        var iconDescript = forecast.weather[0].description;
+        var temperatureForcast = forecast.temp.day;
+        var { humidity } = forecast;
+        var windForcast = forecast.wind_speed;
+
+        var col = document.createElement('div');
+        var card = document.createElement('div');
+        var cardBody = document.createElement('div');
+        var cardTitle = document.createElement('h5');
+        var weatherIcon = document.createElement('img');
+        var tempElement = document.createElement('p');
+        var windElement = document.createElement('p');
+        var humidElement = document.createElement('p');
+
+        col.append(card);
+        card.append(cardBody);
+        cardBody.append(cardTitle, weatherIcon, tempElement, windElement, humidElement);
