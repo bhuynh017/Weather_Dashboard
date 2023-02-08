@@ -126,3 +126,43 @@ function todaysWeather(city, weather, timezone) {
         col.append(card);
         card.append(cardBody);
         cardBody.append(cardTitle, weatherIcon, tempElement, windElement, humidElement);
+
+        col.setAttribute('class', 'col-md');
+        col.classList.add('five-day-card');
+        card.setAttribute('class', 'card bg-primary h-100 text-white');
+        cardBody.setAttribute('class', 'card-body p-2');
+        cardTitle.setAttribute('class', 'card-title');
+        tempElement.setAttribute('class', 'card-text');
+        windElement.setAttribute('class', 'card-text');
+        humidElement.setAttribute('class', 'card-text');
+
+        cardTitle.textContent = dayjs.unix(unixTs).tz(timezone).format('M/D/YYYY');
+        weatherIcon.setAttribute('src', iconUrl);
+        weatherIcon.setAttribute('alt', iconDescription);
+        tempElement.textContent = `Temp: ${tempF} °F`;
+        windElement.textContent = `Wind: ${windMph} MPH`;
+        humidElement.textContent = `Humidity: ${humidity} %`;
+      
+        forecastContainer.append(col);
+      }
+
+      // five day forecast
+      function renderForecast(dailyForecast, timezone) {
+        var beginDate = dayjs().tz(timezone).add(1, 'day').startOf('day').unix();
+        var endDate = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
+      
+        var headingCol = document.createElement('div');
+        var heading = document.createElement('h4');
+      
+        headingCol.setAttribute('class', 'col-12');
+        heading.textContent = '5-Day Forecast:';
+        headingCol.append(heading);
+      
+        forecastContainer.innerHTML = '';
+        forecastContainer.append(headingCol);
+        for (var i = 0; i < dailyForecast.length; i++) {
+          if (dailyForecast[i].dt >= beginDate && dailyForecast[i].dt < endDate) {
+            renderForecastCard(dailyForecast[i], timezone);
+          }
+        }
+      }
