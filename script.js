@@ -20,7 +20,7 @@ function renderSearchHistory() {
     for (var i = searchHistory.length - 1; i >= 0; i--) {
         var btn = document.createElement('button');
         btn.setAttribute('type', 'button');
-        btn.setAttribute('aria-controls', 'today forecast');
+        btn.setAttribute('aria-controls', 'current forecast');
         btn.classList.add('history-btn', 'btn-history');
     
         btn.setAttribute('data-search', searchHistory[i]);
@@ -28,3 +28,20 @@ function renderSearchHistory() {
         searchHistoryContainer.append(btn);
       }
     }
+    function appendToHistory(search) {
+        if (searchHistory.indexOf(search) !== -1) {
+          return;
+        }
+        searchHistory.push(search);
+      
+        localStorage.setItem('search-history', JSON.stringify(searchHistory));
+        renderSearchHistory();
+      }
+      
+      function initSearchHistory() {
+        var storedHistory = localStorage.getItem('search-history');
+        if (storedHistory) {
+          searchHistory = JSON.parse(storedHistory);
+        }
+        renderSearchHistory();
+      }
