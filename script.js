@@ -47,12 +47,32 @@ function initSearchHistory() {
 }
 
 // displaying the current weather from the data that comes from the api.
-function renderCurrentWeather(city, weather, timezone) {
+function todaysWeather(city, weather, timezone) {
     var date = dayjs().tz(timezone).format('M/D/YYYY');
 
-    var tempF = weather.temp;
-    var windMph = weather.wind_speed;
-    var humidity = weather.humidity;
-    var uvi = weather.uvi;
+    var currentTemp = weather.temp;
+    var currentWind = weather.wind_speed;
+    var currentHumidity = weather.humidity;
+    var currentUVI = weather.uvi;
     var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
-    var iconDescription = weather.weather[0].description || weather[0].main;
+    var icons = weather.weather[0].description || weather[0].main;
+
+    var card = document.createElement('div');
+    var cardBody = document.createElement('div');
+    var heading = document.createElement('h2');
+
+    var todayIcon = document.createElement('img');
+    var weatherEl = document.createElement('p');
+    var windSpeed = document.createElement('p');
+    var humidityEl = document.createElement('p');
+    var todayUVI = document.createElement('p');
+    var uviBadge = document.createElement('button');
+
+    card.setAttribute('class', 'card');
+    cardBody.setAttribute('class', 'card-body');
+    card.append(cardBody);
+
+    heading.setAttribute('class', 'h3 card-title');
+    weatherEl.setAttribute('class', 'card-text');
+    windSpeed.setAttribute('class', 'card-text');
+    humidityEl.setAttribute('class', 'card-text');
