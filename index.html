@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-    <link rel="stylesheet" href="./assets/style.css">
+
     <title>Weather Dashboard</title>
 </head>
 
@@ -21,60 +21,52 @@
         <div class="row">
             <div class="col">
                 <div class="card-body text-center">
+                    <!-- Search input goes here -->
 
-                    <div class="container-fluid">
-
-                        <div class="row">
-                            <div class="col-lg-3 bg-light">
-                                <h5 class="mt-1">Search for a City:</h5>
-                                <div class="input-group mb-3">
-                                    <input id="enter-city" type="text" class="form-control" placeholder="Enter a city"
-                                        aria-label="Enter a city">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" id="search-button">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body bg-light">
+                            <h6 class="card-subtitle mb-2 text-muted">Search For A City</h6>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control searchInput" placeholder="Enter City Name"
+                                    aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary bg-primary searchButton" type="button"
+                                        id="button-addon2"><i class="fas fa-search"></i></button>
                                 </div>
-
-                                <button class="btn btn-primary mb-3" type="button" id="clear-history">Clear
-                                    history</button>
-                                <form id="history"></form>
                             </div>
 
-                            <div class="col-lg-9">
-                                <div class="row mr-0">
-                                    <div class="col-lg-11 card m-3 d-none" id="today-weather">
-                                        <div class="card-body">
-                                            <h3 id="city-name" class="city-name align-middle"></h3>
-                                            <img id="current-pic" alt="">
-                                            <p id="temperature"></p>
-                                            <p id="humidity"></p>
-                                            <p id="wind-speed"></p>
-                                            <p id="UV-index"></p>
-                                        </div>
-                                    </div>
-                                </div>
+                            <ul class="list-group">
 
-                                <div class="row d-none" id="fiveday-header">
-                                    <div class="col-12">
-                                        <h3>5-Day Forecast</h3>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                                    <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                                </div>
-                                
-                            </div>
+                            </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Appends current weather forecast-->
+            <div class="col mt-4 mr-5">
+                <div class="card currentCard pb-2 pt-1">
+                    <h5 class="card-title mt-2 text-center">Current Forecast</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mt-4">
+                    <div class="card pb-5 fiveDayCard pl-5">
+                        <!-- Appends 5 day forecast-->
+                        <h5 class="card-title mt-2 mr-5">5-Day Forecast </h5>
+                        <div class="row">
+                            <div class="col fiveDayOne">
+                            </div>
 
-                    <script src="./assets/script.js"></script>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <script src="./assets/script.js"></script>
 </body>
 
 </html>
