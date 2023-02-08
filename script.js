@@ -45,3 +45,14 @@ function initSearchHistory() {
   }
   renderSearchHistory();
 }
+
+// displaying the current weather from the data that comes from the api.
+function renderCurrentWeather(city, weather, timezone) {
+    var date = dayjs().tz(timezone).format('M/D/YYYY');
+
+    var tempF = weather.temp;
+    var windMph = weather.wind_speed;
+    var humidity = weather.humidity;
+    var uvi = weather.uvi;
+    var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
+    var iconDescription = weather.weather[0].description || weather[0].main;
