@@ -1,7 +1,7 @@
 // API Variables
 var searchHistory = [];
 var weatherApiRootUrl = "https://api.openweathermap.org";
-var weatherApiKey = "214951dee37be14146c17c73e1722fbc";
+var ApiKey = "89b64b9024b5284922cc2113ee008be7";
 
 // DOM references
 var searchForm = document.querySelector("#search-form");
@@ -10,9 +10,8 @@ var currentContainer = document.querySelector("#current");
 var forecastContainer = document.querySelector("#forecast");
 var HistoryContainer = document.querySelector("#history");
 
-// Timezone
-// dayjs.extend(window.dayjs_plugin_utc);
-// dayjs.extend(window.dayjs_plugin_timezone);
+dayjs.extend(window.dayjs_plugin_utc);
+dayjs.extend(window.dayjs_plugin_timezone);
 
 function renderSearchHistory() {
   HistoryContainer.innerHTML = "";
@@ -25,7 +24,7 @@ function renderSearchHistory() {
 
     btn.setAttribute("data-search", searchHistory[i]);
     btn.textContent = searchHistory[i];
-    searchHistoryContainer.append(btn);
+    HistoryContainer.append(btn);
   }
 }
 function appendToHistory(search) {
@@ -55,7 +54,7 @@ function todaysWeather(city, weather, timezone) {
   var currentHumidity = weather.humidity;
   var currentUVI = weather.uvi;
   var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
-  var icons = weather.weather[0].description || weather[0].main;
+  var iconDescription = weather.weather[0].description || weather[0].main;
 
   var card = document.createElement("div");
   var cardBody = document.createElement("div");
@@ -81,10 +80,10 @@ function todaysWeather(city, weather, timezone) {
   todayIcon.setAttribute("src", iconUrl);
   todayIcon.setAttribute("alt", iconDescription);
   todayIcon.setAttribute("class", "weather-img");
-  heading.append(weatherIcon);
-  weatherEl.textContent = `Temp: ${tempF}°F`;
-  windSpeed.textContent = `Wind: ${windMph} MPH`;
-  humidityEl.textContent = `Humidity: ${humidity} %`;
+  heading.append(todayIcon);
+  currentTemp.textContent = `Temp: ${currentTemp}°F`;
+  currentWind.textContent = `Wind: ${currentWind} MPH`;
+  humidityEl.textContent = `Humidity: ${currentHumidity} %`;
   cardBody.append(heading, weatherEl, windSpeed, humidityEl);
 
   todayUVI.textContent = "UV Index: ";
@@ -92,7 +91,7 @@ function todaysWeather(city, weather, timezone) {
 
   if (currentUVI < 3) {
     uviBadge.classList.add("btn-success");
-  } else if (uvi < 7) {
+  } else if (currentUVI < 7) {
     uviBadge.classList.add("btn-warning");
   } else {
     uviBadge.classList.add("btn-danger");
@@ -144,9 +143,9 @@ function renderForecastCard(forecast, timezone) {
 
   cardTitle.textContent = dayjs.unix(unixTs).tz(timezone).format("M/D/YYYY");
   weatherIcon.setAttribute("src", iconUrl);
-  weatherIcon.setAttribute("alt", iconDescription);
-  tempElement.textContent = `Temp: ${tempF} °F`;
-  windElement.textContent = `Wind: ${windMph} MPH`;
+  weatherIcon.setAttribute("alt", iconDescript);
+  tempElement.textContent = `Temp: ${temperatureForcast} °F`;
+  windElement.textContent = `Wind: ${windForcast} MPH`;
   humidElement.textContent = `Humidity: ${humidity} %`;
 
   forecastContainer.append(col);
@@ -174,7 +173,7 @@ function renderForecast(dailyForecast, timezone) {
 }
 
 function renderItems(city, data) {
-  CurrentWeather(city, data.current, data.timezone);
+  todaysWeather(city, data.current, data.timezone);
   currentForecast(data.daily, data.timezone);
 }
 
@@ -182,7 +181,7 @@ function fetchWeather(location) {
   var { lat } = location;
   var { lon } = location;
   var city = location.name;
-  var apiUrl = `${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${ApiKey}`;
+  var apiUrl = `${weatherApiRootUrl}/data/2.5/weather?${lat}=44.34&${lon}=10.99&appid=${ApiKey}`;
 
   fetch(apiUrl)
     .then(function (res) {
@@ -195,3 +194,51 @@ function fetchWeather(location) {
       console.error(err);
     });
 }
+
+function fetchCoords(search) {
+    var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${ApiKey}`;
+  
+    fetch(apiUrl)
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data[0]) {
+          alert('There is no location here!!');
+        } else {
+          appendToHistory(search);
+          fetchWeather(data[0]);
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
+  }
+
+  function handleSearchFormSubmit(e) {
+    // Don't continue if there is nothing in the search form
+    if (!cityInput.value) {
+      return;
+    }
+  
+    e.preventDefault();
+    var search = cityInput.value.trim();
+    fetchCoords(search);
+    searchInput.value = '';
+  }
+  
+  function handleSearchHistoryClick(e) {
+    // Don't do search if current elements is not a search history button
+    if (!e.target.matches('.btn-history')) {
+      return;
+    }
+  
+    var btn = e.target;
+    var search = btn.getAttribute('data-search');
+    fetchCoords(search);
+  }
+  
+  initSearchHistory();
+  searchForm.addEventListener('submit', handleSearchFormSubmit);
+  HistoryContainer.addEventListener('click', handleSearchHistoryClick);
+  
