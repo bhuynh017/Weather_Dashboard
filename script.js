@@ -76,3 +76,24 @@ function todaysWeather(city, weather, timezone) {
     weatherEl.setAttribute('class', 'card-text');
     windSpeed.setAttribute('class', 'card-text');
     humidityEl.setAttribute('class', 'card-text');
+
+    heading.textContent = `${city} (${date})`;
+    todayIcon.setAttribute('src', iconUrl);
+    todayIcon.setAttribute('alt', iconDescription);
+    todayIcon.setAttribute('class', 'weather-img');
+    heading.append(weatherIcon);
+    weatherEl.textContent = `Temp: ${tempF}°F`;
+    windSpeed.textContent = `Wind: ${windMph} MPH`;
+    humidityEl.textContent = `Humidity: ${humidity} %`;
+    cardBody.append(heading, weatherEl, windSpeed, humidityEl);
+
+    todayUVI.textContent = 'UV Index: ';
+    uviBadge.classList.add('btn', 'btn-sm');
+
+    if (currentUVI < 3) {
+        uviBadge.classList.add('btn-success');
+      } else if (uvi < 7) {
+        uviBadge.classList.add('btn-warning');
+      } else {
+        uviBadge.classList.add('btn-danger');
+      }
